@@ -3,7 +3,7 @@ package com.miaoshaproject.controller.viewobject;
 public class UserVO {
     private Integer id;
     private String name;
-    private Boolean gender;
+    private Integer gender;
     private Integer age;
     private String telphone;
 
@@ -23,11 +23,11 @@ public class UserVO {
         this.name = name;
     }
 
-    public Boolean getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(Boolean gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
