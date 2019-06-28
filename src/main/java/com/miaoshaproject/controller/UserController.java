@@ -31,6 +31,28 @@ public class UserController extends BaseController{
     @Autowired
     private HttpServletRequest httpServletRequest;
 
+
+    //用户登录接口
+    @RequestMapping(value = "/login",method = {RequestMethod.POST},consumes={CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType login(@RequestParam(name="telphone")String telphone,
+                                  @RequestParam(name="password")String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
+        //入参校验
+        if(org.apache.commons.lang3.StringUtils.isEmpty(telphone)
+        || org.apache.commons.lang3.StringUtils.isEmpty(password))
+        {
+            throw new BusinessException(EmBusinessError.PARAMETER_VAILDATION_ERROR,"参数为空");
+        }
+
+        //用户登录流程，用来校验用户登录是否合法
+        UserModel userModel = userService.vaildateLogin(telphone,this.EncodeByMd5(password));
+
+        //将登录凭证加入到用户登录成功的session内
+        this.httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
+        this.httpServletRequest.getSession().setAttribute("LOGIN_USER",userModel);
+        return CommonReturnType.create(null);
+    }
+
     //用户注册接口
     @RequestMapping(value = "/register",method = {RequestMethod.POST},consumes={CONTENT_TYPE_FORMED})
     @ResponseBody
@@ -42,6 +64,10 @@ public class UserController extends BaseController{
                                      @RequestParam(name="password")String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
         //验证手机号和对应的otpCode相符合
         String inSessionOtpCode = (String)this.httpServletRequest.getSession().getAttribute(telphone);
+        if(otpCode==""||otpCode==null)
+        {
+            throw new BusinessException(EmBusinessError.PARAMETER_VAILDATION_ERROR,"请填写验证码");
+        }
         if(!StringUtils.equals(otpCode,inSessionOtpCode))
         {
             throw new BusinessException(EmBusinessError.PARAMETER_VAILDATION_ERROR,"短信验证码不符合");
