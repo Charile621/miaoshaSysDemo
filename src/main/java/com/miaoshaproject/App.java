@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Hello world!
  *
  */
-@SpringBootApplication(scanBasePackages = "com.miaoshaproject")
+@SpringBootApplication(scanBasePackages = "com.miaoshaproject" )
 @RestController
 @MapperScan("com.miaoshaproject.dao")
 public class App 
@@ -36,6 +36,7 @@ public class App
     }
     public static void main( String[] args )
     {
+
         System.out.println( "Hello World!" );
         SpringApplication.run(App.class,args);
     }

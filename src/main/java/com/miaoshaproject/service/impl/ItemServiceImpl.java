@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -63,24 +65,58 @@ public class ItemServiceImpl implements ItemService {
             throw new BusinessException(EmBusinessError.PARAMETER_VAILDATION_ERROR,validationResult.getErrMsg());
         }
         //转化itemmodel->dataobject
-        ItemDO itemDO = convertItemDOFromItemModel(itemModel);
+        ItemDO itemDO = this.convertItemDOFromItemModel(itemModel);
 
         //写入数据库
         itemDOMapper.insertSelective(itemDO);
+        itemModel.setId(itemDO.getId());
 
+        ItemStockDO itemStockDO = this.convertItemStockDOFromItemModel(itemModel);
+
+        itemStockDOMapper.insertSelective(itemStockDO);
         //返回创建完成的对象
 
 
-        return null;
+        return this.getItemById(itemModel.getId());
     }
 
     @Override
     public List<ItemModel> listItem() {
-        return null;
+
+        List<ItemDO> itemDOList = itemDOMapper.listItem();
+        List<ItemModel> itemModelList = itemDOList.stream().map(itemDO -> {
+           ItemStockDO itemStockDO = itemStockDOMapper.selectByItemId(itemDO.getId());
+           ItemModel itemModel = this.convertModelFromDataObject(itemDO,itemStockDO);
+           return itemModel;
+        }).collect(Collectors.toList());
+        return itemModelList;
     }
 
     @Override
     public ItemModel getItemById(Integer id) {
-        return null;
+
+
+        ItemDO itemDO = itemDOMapper.selectByPrimaryKey(id);
+        if(itemDO==null)
+        {
+            return null;
+        }
+
+        //操作获得库存数量
+        ItemStockDO itemStockDO= itemStockDOMapper.selectByItemId(itemDO.getId());
+
+        //将dataobject->model
+        ItemModel itemModel = convertModelFromDataObject(itemDO,itemStockDO);
+
+        return itemModel;
+    }
+
+    private ItemModel convertModelFromDataObject(ItemDO itemDO,ItemStockDO itemStockDO)
+    {
+        ItemModel itemModel = new ItemModel();
+        BeanUtils.copyProperties(itemDO,itemModel);
+        itemModel.setPrice(new BigDecimal(itemDO.getPrice()));
+        itemModel.setStock(itemStockDO.getStock());
+        return itemModel;
     }
 }
