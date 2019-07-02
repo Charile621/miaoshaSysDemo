@@ -49,8 +49,10 @@
 				<label class="control-label" id="sales"/>
 			</div>
 		</div>
+		<div class="form-actions">
+			<button class="btn blue" id="createorder" type="submit">下单</button>
+		</div>
 	</div>
-
 </body>
 
 
@@ -58,16 +60,47 @@
 <script >
 	var g_itemVO={};
 	jQuery(document).ready(function(){
-function getParam(paramName) {            
-	paramValue = "", isFound = !1;         
-	if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {               
-		arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&"), i = 0;               
-		while (i < arrSource.length && !isFound) arrSource[i].indexOf("=") > 0 && arrSource[i].split("=")[0].toLowerCase() ==                  
-			paramName.toLowerCase() && (paramValue = arrSource[i].split("=")[1], isFound = !0), i++         
-	}           
-	return paramValue == "" && (paramValue = null), paramValue      
-}
+	function getParam(paramName) {            
+		paramValue = "", isFound = !1;         
+		if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {               
+			arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&"), i = 0;               
+			while (i < arrSource.length && !isFound) arrSource[i].indexOf("=") > 0 && arrSource[i].split("=")[0].toLowerCase() ==                  
+				paramName.toLowerCase() && (paramValue = arrSource[i].split("=")[1], isFound = !0), i++         
+		}           
+		return paramValue == "" && (paramValue = null), paramValue      
+	}
 
+    $("#createorder").on("click",function(){
+    	$.ajax({
+				type:"POST",
+				contentType:"application/x-www-form-urlencoded",
+				url:"http://localhost:8090/order/createorder",
+				data:{
+					"itemId":g_itemVO.id,
+					"amount":1
+				},
+				xhrFields:{withCredentials:true},
+				success:function(data){
+					if(data.status=="success")
+					{
+						alert("下单成功");
+						window.location.reload();
+					}
+					else
+					{
+						alert("下单失败，原因为"+data.data.errMsg);
+						if(data.data.errCode == 20003)
+						{
+							window.location.href="login.html";
+						}
+					}
+				},
+				error:function(data)
+				{
+					alert("下单失败，原因为"+data.responseText);
+				}
+			});
+    });
 		//获取商品详情
 		$.ajax({
 				type:"GET",

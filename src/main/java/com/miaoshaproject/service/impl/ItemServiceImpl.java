@@ -111,6 +111,23 @@ public class ItemServiceImpl implements ItemService {
         return itemModel;
     }
 
+    @Override
+    @Transactional
+    public boolean decreaseStock(Integer itemId, Integer amount) throws BusinessException {
+        int affectedRow = itemStockDOMapper.decreaseStock(itemId,amount);
+        if(affectedRow > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public void increaseSales(Integer itemId, Integer amount) throws BusinessException {
+        itemDOMapper.increaseSales(itemId,amount);
+    }
+
     private ItemModel convertModelFromDataObject(ItemDO itemDO,ItemStockDO itemStockDO)
     {
         ItemModel itemModel = new ItemModel();

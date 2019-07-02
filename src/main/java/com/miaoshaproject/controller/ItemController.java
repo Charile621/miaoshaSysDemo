@@ -23,7 +23,7 @@ public class ItemController  extends BaseController{
     private ItemService itemService;
 
     //创建商品
-    @RequestMapping(value = "/create",method = {RequestMethod.POST},consumes={CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/createitem",method = {RequestMethod.POST},consumes={CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType createItem(@RequestParam(name="title")String title,
                                        @RequestParam(name="description")String description,
