@@ -14,18 +14,18 @@ public enum EmBusinessError implements CommonError{
     STOCK_NOT_ENOUGH(300001,"库存不足")
     ;
 
-    private EmBusinessError(int erroeCode,String errMsg)
+    private EmBusinessError(int errorCode,String errMsg)
     {
-        this.erroeCode = erroeCode;
+        this.errorCode = errorCode;
         this.errMsg = errMsg;
     }
 
-    private int erroeCode;
+    private int errorCode;
     private String errMsg;
 
     @Override
     public int getErrorCode() {
-        return this.erroeCode;
+        return this.errorCode;
     }
 
     @Override
