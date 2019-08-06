@@ -21,6 +21,17 @@ public class UserModel {
     private String thirdPartId;
     @NotBlank(message = "密码不能为空")
     private String encrptPassword;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    private Integer userId;
+
     public Integer getId() {
         return id;
     }

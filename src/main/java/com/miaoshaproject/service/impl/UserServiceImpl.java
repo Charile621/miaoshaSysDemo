@@ -67,9 +67,8 @@ public class UserServiceImpl implements UserService {
 
 
 
-        userModel.setId(userDO.getId());
-
-
+        UserDO newUser = userDOMapper.selectByTelphone(userDO.getTelphone());
+        userModel.setUserId(newUser.getId());
         UserPasswordDO userPasswordDO = convertPasswordFromModel(userModel);
         userPasswordDOMapper.insertSelective(userPasswordDO);
         return;
@@ -103,6 +102,7 @@ public class UserServiceImpl implements UserService {
         UserPasswordDO userPasswordDO = new UserPasswordDO();
         userPasswordDO.setEncrptPassword(userModel.getEncrptPassword());
         userPasswordDO.setUserId(userModel.getId());
+        userPasswordDO.setUserId(userModel.getUserId());
         return userPasswordDO;
     }
     private UserDO convertFromModel(UserModel userModel)
