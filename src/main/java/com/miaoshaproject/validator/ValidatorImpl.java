@@ -1,6 +1,7 @@
 package com.miaoshaproject.validator;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
@@ -10,6 +11,8 @@ import java.util.Set;
 
 @Component
 public class ValidatorImpl implements InitializingBean {
+
+    @Autowired
     private Validator validator;
 
     //实现校验方法，并返回校验结果

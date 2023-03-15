@@ -42,7 +42,7 @@
 	jQuery(document).ready(function(){
 
 		$("#register").on("click",function(){
-			window.location.href="file:///F:/Maven/projects/miaosha/html/getotp.html";
+			window.location.href="getotp.html";
 		});
 
 		//绑定otp的click事件用于向后端发送获取手机验证码的请求
@@ -73,7 +73,7 @@
 					if(data.status=="success")
 					{
 						alert("登录成功");
-						window.location.href="listitem.html";
+						window.location.href="./listitem.html";
 					}
 					else
 					{

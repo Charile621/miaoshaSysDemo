@@ -9,11 +9,15 @@ import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,7 +26,7 @@ import java.util.Random;
 
 @Controller("user")
 @RequestMapping("/user")
-@CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class UserController extends BaseController{
 
     @Autowired
@@ -30,6 +34,9 @@ public class UserController extends BaseController{
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    private HttpServletResponse httpServletResponse;
 
 
     //用户登录接口
@@ -109,9 +116,19 @@ public class UserController extends BaseController{
         randomInt += 10000;
         String otpCode = String.valueOf(randomInt);
 
-        //将otp验证码通对应的手机关联,使用HttpSession的方式绑定他的手机号与otpCode
-        httpServletRequest.getSession().setAttribute(telphone,otpCode);
+        ResponseCookie cookie = ResponseCookie.from("JSESSIONID", httpServletRequest.getSession().getId() ) // key & value
+                .httpOnly(true)       // 禁止js读取
+                .secure(true)     // 在http下也传输
+                .domain("localhost")// 域名
+                .path("/")       // path
+                .maxAge(3600)// 1个小时候过期
+                .sameSite("None")  // 大多数情况也是不发送第三方 Cookie，但是导航到目标网址的 Get 请求除外
+                .build();
+        httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
+
+        //将otp验证码通对应的手机关联,使用HttpSession的方式绑定他的手机号与otpCode
+        httpServletRequest.getSession().setAttribute(telphone, otpCode);
         //将otp验证码通过短信通道发送给用户
         System.out.println("telphone="+telphone+"&otpCode="+otpCode);
 

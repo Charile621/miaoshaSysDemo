@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
         UserDO userDO = convertFromModel(userModel);
         try {
             userDOMapper.insertSelective(userDO);
+            userModel.setUserId(userDO.getId());
         }catch(DuplicateKeyException ex)
         {
             throw new BusinessException(EmBusinessError.PARAMETER_VAILDATION_ERROR,"手机号已经被注册");

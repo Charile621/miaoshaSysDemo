@@ -110,13 +110,14 @@
 					"gender":gender,
 					"age":age,
 					"otpCode":otpCode
-
 				},
 				xhrFields:{withCredentials:true},
+				crossDomain: true,
 				success:function(data){
 					if(data.status=="success")
 					{
 						alert("注册成功");
+						window.location.href="./login.html"
 					}
 					else
 					{
