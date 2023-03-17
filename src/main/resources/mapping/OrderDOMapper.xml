@@ -8,7 +8,7 @@
     <result column="promo_id" jdbcType="INTEGER" property="promoId" />
     <result column="item_price" jdbcType="DOUBLE" property="itemPrice" />
     <result column="amount" jdbcType="INTEGER" property="amount" />
-    <result column="order_pirce" jdbcType="DOUBLE" property="orderPirce" />
+    <result column="order_price" jdbcType="DOUBLE" property="orderPrice" />
   </resultMap>
   <sql id="Base_Column_List">
     id, user_id, item_id, promo_id, item_price, amount, order_pirce
@@ -25,10 +25,10 @@
   </delete>
   <insert id="insert" parameterType="com.miaoshaproject.dataobject.OrderDO">
     insert into order_info (id, user_id, item_id, promo_id,
-      item_price, amount, order_pirce
+      item_price, amount, order_price
       )
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, #{promoId,jdbcType=INTEGER},
-      #{itemPrice,jdbcType=DOUBLE}, #{amount,jdbcType=INTEGER}, #{orderPirce,jdbcType=DOUBLE}
+      #{itemPrice,jdbcType=DOUBLE}, #{amount,jdbcType=INTEGER}, #{orderPrice,jdbcType=DOUBLE}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.miaoshaproject.dataobject.OrderDO">
@@ -52,8 +52,8 @@
       <if test="amount != null">
         amount,
       </if>
-      <if test="orderPirce != null">
-        order_pirce,
+      <if test="orderPrice != null">
+        order_price,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -75,8 +75,8 @@
       <if test="amount != null">
         #{amount,jdbcType=INTEGER},
       </if>
-      <if test="orderPirce != null">
-        #{orderPirce,jdbcType=DOUBLE},
+      <if test="orderPrice != null">
+        #{orderPrice,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -98,8 +98,8 @@
       <if test="amount != null">
         amount = #{amount,jdbcType=INTEGER},
       </if>
-      <if test="orderPirce != null">
-        order_pirce = #{orderPirce,jdbcType=DOUBLE},
+      <if test="orderPrice != null">
+        order_price = #{orderPrice,jdbcType=DOUBLE},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -111,7 +111,7 @@
       promo_id = #{promoId,jdbcType=INTEGER},
       item_price = #{itemPrice,jdbcType=DOUBLE},
       amount = #{amount,jdbcType=INTEGER},
-      order_pirce = #{orderPirce,jdbcType=DOUBLE}
+      order_price = #{orderPrice,jdbcType=DOUBLE}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

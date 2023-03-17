@@ -31,6 +31,7 @@ public class BaseController {
         }
         else
         {
+            ex.printStackTrace();
             data.put("errorCode", EmBusinessError.UNKONWN_ERROR.getErrorCode());
             data.put("errMsg",EmBusinessError.UNKONWN_ERROR.getErrMsg());
         }

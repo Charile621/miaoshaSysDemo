@@ -114,7 +114,7 @@ public class OrderServiceImpl implements OrderService {
         OrderDO orderDO = new OrderDO();
         BeanUtils.copyProperties(orderModel,orderDO);
         orderDO.setItemPrice(orderModel.getItemPrice().doubleValue());
-        orderDO.setOrderPirce(orderModel.getOrderPrice().doubleValue());
+        orderDO.setOrderPrice(orderModel.getOrderPrice().doubleValue());
         return orderDO;
     }
 

@@ -11,7 +11,7 @@ public class OrderDO {
 
     private Integer amount;
 
-    private Double orderPirce;
+    private Double orderPrice;
 
     private Integer promoId;
 
@@ -63,11 +63,11 @@ public class OrderDO {
         this.amount = amount;
     }
 
-    public Double getOrderPirce() {
-        return orderPirce;
+    public Double getOrderPrice() {
+        return orderPrice;
     }
 
-    public void setOrderPirce(Double orderPirce) {
-        this.orderPirce = orderPirce;
+    public void setOrderPrice(Double orderPrice) {
+        this.orderPrice = orderPrice;
     }
 }
