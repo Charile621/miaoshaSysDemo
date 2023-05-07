@@ -116,17 +116,6 @@ public class UserController extends BaseController{
         randomInt += 10000;
         String otpCode = String.valueOf(randomInt);
 
-//        ResponseCookie cookie = ResponseCookie.from("JSESSIONID", httpServletRequest.getSession().getId() ) // key & value
-//                .httpOnly(true)       // 禁止js读取
-//                .secure(true)     // 在http下也传输
-//                .domain("localhost")// 域名
-//                .path("/")       // path
-//                .maxAge(3600)// 1个小时候过期
-//                .sameSite("None")  // 大多数情况也是不发送第三方 Cookie，但是导航到目标网址的 Get 请求除外
-//                .build();
-//        httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-
-
         //将otp验证码通对应的手机关联,使用HttpSession的方式绑定他的手机号与otpCode
         httpServletRequest.getSession().setAttribute(telphone, otpCode);
         //将otp验证码通过短信通道发送给用户
@@ -152,8 +141,22 @@ public class UserController extends BaseController{
         //返回通用对象
         return CommonReturnType.create(userVO);
     }
-    private UserVO convertFromModel(UserModel userModel)
-    {
+
+    @RequestMapping("/getOrders")
+    @ResponseBody
+    public CommonReturnType getOrders(@RequestParam(name="id")Integer id) throws BusinessException {
+        //调用service服务获取对应Id的用户对象并返回给前端
+        UserModel userModel = userService.getUserById(id);
+
+        if(userModel == null) {
+            throw new BusinessException(EmBusinessError.USER_NOT_EXIST);
+        }
+
+        //返回用户订单信息
+        return CommonReturnType.create(userService.getOrders(id));
+    }
+
+    private UserVO convertFromModel(UserModel userModel) {
         if(userModel == null)
         {
             return null;

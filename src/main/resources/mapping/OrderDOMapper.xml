@@ -19,6 +19,17 @@
     from order_info
     where id = #{id,jdbcType=VARCHAR}
   </select>
+
+  <select id="selectByIds" parameterType="java.util.List" resultMap="java.util.List">
+    select
+    <include refid="Base_Column_List" />
+    from order_info
+    where id in
+    <foreach collection="ids" index="index" item="ids" open="(" separator="," close=")">
+      #{ids}
+    </foreach>
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from order_info
     where id = #{id,jdbcType=VARCHAR}

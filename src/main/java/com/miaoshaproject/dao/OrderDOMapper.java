@@ -1,6 +1,9 @@
 package com.miaoshaproject.dao;
 
 import com.miaoshaproject.dataobject.OrderDO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OrderDOMapper {
     int deleteByPrimaryKey(String id);
@@ -14,4 +17,6 @@ public interface OrderDOMapper {
     int updateByPrimaryKeySelective(OrderDO record);
 
     int updateByPrimaryKey(OrderDO record);
+
+    List<OrderDO> selectByIds(@Param("ids")List<String> ids);
 }

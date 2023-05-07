@@ -79,9 +79,8 @@ public class ItemServiceImpl implements ItemService {
         ItemStockDO itemStockDO = this.convertItemStockDOFromItemModel(itemModel);
 
         itemStockDOMapper.insertSelective(itemStockDO);
+
         //返回创建完成的对象
-
-
         return this.getItemById(itemModel.getId());
     }
 

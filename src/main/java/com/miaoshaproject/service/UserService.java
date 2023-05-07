@@ -1,7 +1,9 @@
 package com.miaoshaproject.service;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.miaoshaproject.error.BusinessException;
 import com.miaoshaproject.service.model.UserModel;
+
 
 public interface UserService {
     UserModel getUserById(Integer id);
@@ -12,4 +14,6 @@ public interface UserService {
     encrptPassword:用户加密后的密码
     * */
     UserModel vaildateLogin(String telphone,String encrptPassword) throws BusinessException;
+
+    JSONArray getOrders(Integer userId) throws BusinessException;
 }

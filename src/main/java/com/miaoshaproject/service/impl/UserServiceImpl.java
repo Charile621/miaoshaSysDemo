@@ -1,11 +1,15 @@
 package com.miaoshaproject.service.impl;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.miaoshaproject.dao.UserDOMapper;
+import com.miaoshaproject.dao.UserOrderDOMapper;
 import com.miaoshaproject.dao.UserPasswordDOMapper;
 import com.miaoshaproject.dataobject.UserDO;
+import com.miaoshaproject.dataobject.UserOrderDO;
 import com.miaoshaproject.dataobject.UserPasswordDO;
 import com.miaoshaproject.error.BusinessException;
 import com.miaoshaproject.error.EmBusinessError;
+import com.miaoshaproject.service.OrderService;
 import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
 import com.miaoshaproject.validator.ValidationResult;
@@ -16,6 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,6 +35,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ValidatorImpl validator;
+
+    @Autowired
+    private UserOrderDOMapper userOrderDOMapper;
+
+    @Autowired
+    private OrderService orderService;
 
     @Override
     public UserModel getUserById(Integer id)
@@ -92,6 +105,19 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
         }
         return userModel;
+    }
+
+    @Override
+    public JSONArray getOrders(Integer userId) throws BusinessException {
+
+        //根据用户id查出属于自己的所有订单的id
+        List<UserOrderDO> userOrderDOS = userOrderDOMapper.selectByUserId(userId);
+        List<String> orderIds = userOrderDOS.stream().map(userOrderDO -> {
+            return userOrderDO.getOrderId();
+        }).collect(Collectors.toList());
+
+        //根据订单id去查询具体订单信息并构造成json返回
+        return orderService.getOrdersByIds(orderIds);
     }
 
     private UserPasswordDO convertPasswordFromModel(UserModel userModel)

@@ -39,10 +39,9 @@
         </javaClientGenerator>
 
         <!--生成对应表及类名-->
-        <!--<table tableName="mmall_shipping" domainObjectName="Shipping" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-        </table>
-        -->
+<!--        <table tableName="user_order" domainObjectName="UserOrderDO" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--        </table>-->
     </context>
 </generatorConfiguration>
