@@ -20,7 +20,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectByIds" parameterType="java.util.List" resultMap="java.util.List">
+  <select id="selectByIds" parameterType="java.util.List" resultType="java.util.List">
     select
     <include refid="Base_Column_List" />
     from order_info
